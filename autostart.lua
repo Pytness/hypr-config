@@ -1,0 +1,20 @@
+SRC_PATH = os.getenv 'HOME' .. '/.local/share/bin'
+
+local exec_once = {
+
+  SRC_PATH .. '/resetxdgportal.sh', -- reset XDPH for screenshare
+  SRC_PATH .. '/polkitkdeauth.sh', -- authentication dialogue for GUI apps
+  'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP', -- for XDPH
+  'dbus-update-activation-environment --systemd --all', -- for XDPH
+  'systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP', -- for XDPH
+  'wl-paste --type text --watch cliphist store', -- clipboard store text data
+  'wl-paste --type image --watch cliphist store', -- clipboard store image data
+  'hyprpaper',
+  'hyprpanel',
+}
+
+hl.on('hyprland.start', function()
+  for _, cmd in ipairs(exec_once) do
+    hl.exec_cmd(cmd)
+  end
+end)
