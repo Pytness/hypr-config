@@ -29,11 +29,12 @@ end
 
 function dontkillsteam()
   local active_window = hl.get_active_window()
-  if active_window and active_window.class == 'Steam' then
+  if active_window then
+    if active_window.class == 'Steam' then
     -- TODO: unmap window
-  else
-    hl.dispatch(hl.dsp.window.kill())
-    -- hl.exec_cmd()
+    else
+      hl.dispatch(hl.dsp.window.close())
+    end
   end
 end
 
