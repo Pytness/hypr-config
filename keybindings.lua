@@ -127,7 +127,7 @@ bind({ MAIN_MOD, 'Return' }, hl.dsp.window.fullscreen())
 
 -- Lock screen and logout menu
 bind({ MAIN_MOD, 'Backspace' }, exec 'hyprlock')
-bind({ MAIN_MOD, 'SHIFT', 'Backspace' }, exec(SRC_PATH .. '/logoutlaunch.sh 1'))
+bind({ MAIN_MOD, 'SHIFT', 'Backspace' }, exec 'wlogout -b 4 -c 0 -r 0 -m 0 --protocol layer-shell')
 
 -- Application shortcuts
 bind({ MAIN_MOD, 't' }, exec(TERM))
