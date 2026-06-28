@@ -1,3 +1,4 @@
+local constants = require 'constants'
 local utils = require 'utils'
 local logger = utils.Logger:new(os.getenv 'HOME' .. '/.config/hypr/hyprland.log')
 logger:set_level(4)
@@ -165,6 +166,10 @@ for i = 1, 9 do
 end
 
 bind({ MAIN_MOD, '0' }, hl.dsp.focus { workspace = '10' })
+
+-- Move workspace to monitor
+bind({ MAIN_MOD, 'CTRL', 'h' }, hl.dsp.workspace.move { monitor = constants.SECONDARY_MONITOR })
+bind({ MAIN_MOD, 'CTRL', 'l' }, hl.dsp.workspace.move { monitor = constants.PRIMARY_MONITOR })
 
 -- Relative workspaces
 bind({ MAIN_MOD, 'CTRL', 'k' }, hl.dsp.focus { workspace = '-1' })

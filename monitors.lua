@@ -1,14 +1,16 @@
+local constants = require 'constants'
+
 hl.monitor {
-  output = 'DP-1',
+  output = constants.PRIMARY_MONITOR,
   mode = '3840x2160@143',
   position = '1600x0',
   scale = 1.5,
   bitdepth = 10,
-  cm = 'auto',
+  cm = 'wide',
 }
 
 hl.monitor {
-  output = 'DP-2',
+  output = constants.SECONDARY_MONITOR,
   mode = '2560x1440@60',
   position = '0x0',
   scale = 1.6,
