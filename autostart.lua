@@ -19,4 +19,6 @@ hl.on('hyprland.start', function()
   for _, cmd in ipairs(exec_once) do
     hl.exec_cmd(cmd)
   end
+
+  hl.dispatch(hl.dsp.focus { workspace = '1' })
 end)
