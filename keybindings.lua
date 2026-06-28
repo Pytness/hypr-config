@@ -38,18 +38,18 @@ function dontkillsteam()
   end
 end
 
--- tempfile=$(mktemp)
---
---
--- hyprctl dispatch sendshortcut "CTRL,A,"
--- hyprctl dispatch sendshortcut "CTRL,C,"
--- sleep 0.1
---
--- wl-paste > $tempfile
---
--- hyprctl dispatch exec "[float; center]" "bash -c \"st -e nvim $tempfile && cat $tempfile | wl-copy -n && hyprctl dispatch sendshortcut \\\"CTRL,V,\\\" && rm $tempfile\""
+local __last_editinnvim_execution = nil
 
-local function edit_in_nvim_()
+local function edit_in_nvim()
+  -- BUG: apparently using send_shortcut will make the keybind execute twice
+  -- FOR SOME FUCKING REASON
+  if __last_editinnvim_execution ~= nil and os.time() - __last_editinnvim_execution < 1 then
+    logger:log 'edit_in_nvim executed too recently, skipping'
+    return
+  else
+    __last_editinnvim_execution = os.time()
+  end
+
   local TAG = 'editinnvim'
   local tempfile = os.tmpname()
 
@@ -88,18 +88,24 @@ local function edit_in_nvim_()
 
     if target_address ~= nil then
       logger:log('Opened window with address ' .. target_address .. ' for editing in nvim')
-      local close_handler
 
+      local close_handler
       close_handler = hl.on('window.close', function(w, b)
-        if w.address == target_address then
-          logger:log('Closed window with address ' .. target_address .. ', copying content back to clipboard and cleaning up')
-          hl.exec_cmd('cat ' .. tempfile .. ' | wl-copy -n && rm ' .. tempfile)
-          hl.timer(function()
-            hl.dispatch(hl.dsp.send_shortcut { mods = 'CTRL', key = 'v', { adress = active_window.address } })
-            open_handler:remove()
-            close_handler:remove()
-          end, { timeout = 100, type = 'oneshot' }):set_enabled(true)
+        if w.address ~= target_address then
+          return
         end
+
+        logger:log('Closed window with address ' .. target_address .. ', copying content back to clipboard and cleaning up')
+
+        hl.exec_cmd('cat ' .. tempfile .. ' | wl-copy -n && rm ' .. tempfile)
+
+        hl.timer(function()
+          hl.dispatch(hl.dsp.send_shortcut { mods = 'CTRL', key = 'v', { adress = active_window.address } })
+          open_handler:remove()
+          close_handler:remove()
+
+          __last_editinnvim_execution = nil
+        end, { timeout = 100, type = 'oneshot' }):set_enabled(true)
       end)
     end
   end)
@@ -134,7 +140,7 @@ bind({ MAIN_MOD, 'a' }, exec('pkill -x rofi || ' .. SRC_PATH .. '/rofilaunch.sh 
 bind({ MAIN_MOD, 'tab' }, exec('pkill -x rofi || ' .. SRC_PATH .. '/rofilaunch.sh w'))
 bind({ MAIN_MOD, 'r' }, exec('pkill -x rofi || ' .. SRC_PATH .. '/rofilaunch.sh f'))
 bind({ MAIN_MOD, 'x' }, exec 'hyprctl kill')
-bind({ MAIN_MOD, 'backslash' }, edit_in_nvim_)
+bind({ MAIN_MOD, 'backslash' }, edit_in_nvim, { release = false, repeating = false })
 
 -- Audio control
 bind({ 'XF86AudioMute' }, exec(SRC_PATH .. '/volumecontrol.sh -o m'), { locked = true })
