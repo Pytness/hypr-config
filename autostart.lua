@@ -10,7 +10,7 @@ local exec_once = {
   'wl-paste --type text --watch cliphist store', -- clipboard store text data
   'wl-paste --type image --watch cliphist store', -- clipboard store image data
   'hyprpaper',
-  'hyprpanel',
+  'wayle panel start',
 }
 
 hl.on('hyprland.start', function()
