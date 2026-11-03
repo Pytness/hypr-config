@@ -3,7 +3,7 @@ local constants = require 'constants'
 SRC_PATH = os.getenv 'HOME' .. '/.local/share/bin'
 
 local exec_once = {
-  'xrandr --output ' .. constants.PRIMARY_MONITOR .. ' --primary',
+  'xrandr --output ' .. constants.Monitors.Primary .. ' --primary',
   SRC_PATH .. '/resetxdgportal.sh', -- reset XDPH for screenshare
   SRC_PATH .. '/polkitkdeauth.sh', -- authentication dialogue for GUI apps
   'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP', -- for XDPH
