@@ -15,6 +15,13 @@ local exec_once = {
   'wayle panel start',
 }
 
+local workspace_apps = {
+  ['1'] = { 'firefox', {} },
+  ['8'] = { 'discord', {} },
+  ['9'] = { 'spotify-launcher', {} },
+  ['special:special'] = { constants.Apps.Term, {} },
+}
+
 hl.on('hyprland.start', function()
   for _, cmd in ipairs(exec_once) do
     hl.exec_cmd(cmd)
@@ -24,4 +31,27 @@ hl.on('hyprland.start', function()
     hl.dispatch(hl.dsp.focus { workspace = '10' })
     hl.dispatch(hl.dsp.focus { workspace = '1' })
   end, { type = 'oneshot', timeout = 200 })
+end)
+
+hl.on('workspace.created', function(ws)
+  if ws.is_empty == false then
+    return
+  end
+
+  local program = workspace_apps[ws.name]
+
+  if program == nil then
+    return
+  end
+
+  local cmd, app_rules = table.unpack(program)
+
+  local rules = {}
+  for k, v in pairs(app_rules) do
+    rules[k] = v
+  end
+
+  rules.workspace = ws.name .. ' silent'
+
+  hl.exec_cmd(cmd, rules)
 end)
