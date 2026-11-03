@@ -1,4 +1,5 @@
 local constants = require 'constants'
+local utils = require 'utils'
 
 SRC_PATH = os.getenv 'HOME' .. '/.local/share/bin'
 
@@ -22,10 +23,33 @@ local workspace_apps = {
   ['special:special'] = { constants.Apps.Term, {} },
 }
 
+--- Handle special case for Enpass, since it has a weird behavior
+local function autostart_enpass()
+  local cmd = 'QT_QPA_PLATFORM="xcb" /opt/enpass/Enpass -minimize'
+
+  local rules = { workspace = 'special:enpass silent' }
+
+  utils.on_window_open_once({ class = 'Enpass' }, function(window)
+    hl.timer(function()
+      hl.dispatch(hl.dsp.window.close { window = window })
+
+      -- For some reason, the first time Enpass is started
+      -- it doesn't show up, so we skip it for the user
+      hl.exec_cmd(cmd)
+    end, { type = 'oneshot', timeout = 1000 })
+  end)
+
+  hl.exec_cmd(cmd, rules)
+end
+
 hl.on('hyprland.start', function()
   for _, cmd in ipairs(exec_once) do
     hl.exec_cmd(cmd)
   end
+
+  -- handle special case for enpass, since it needs to be
+  -- started and then closed to avoid it being in the way
+  autostart_enpass()
 
   hl.timer(function()
     hl.dispatch(hl.dsp.focus { workspace = '10' })

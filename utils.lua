@@ -54,7 +54,29 @@ local function match_tag(tag, tags)
   return false
 end
 
+--- Execute callback on window.open once
+---
+--- @param window_rule HL.WindowRule The window rule to wait for
+--- @param callback fun(window: HL.Window) The callback to execute when the window is opened
+local function on_window_open_once(window_rule, callback)
+  local handler = nil
+
+  handler = hl.on('window.open', function(window, _)
+    if window_rule.class ~= nil and window.class ~= window_rule.class then
+      return
+    end
+
+    if window_rule.title ~= nil and window.title ~= window_rule.title then
+      return
+    end
+
+    callback(window)
+    handler:remove()
+  end)
+end
+
 return {
   Logger = Logger,
   match_tag = match_tag,
+  on_window_open_once = on_window_open_once,
 }
