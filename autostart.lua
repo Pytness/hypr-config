@@ -20,5 +20,6 @@ hl.on('hyprland.start', function()
     hl.exec_cmd(cmd)
   end
 
+  hl.dispatch(hl.dsp.focus { workspace = '10' })
   hl.dispatch(hl.dsp.focus { workspace = '1' })
 end)
