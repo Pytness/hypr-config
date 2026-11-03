@@ -1,6 +1,15 @@
 local M = {}
 
-M.PRIMARY_MONITOR = 'DP-3'
-M.SECONDARY_MONITOR = 'DP-2'
+M.Monitors = {
+  Primary = 'DP-3',
+  Secondary = 'DP-2',
+}
+
+M.Apps = {
+  Term = 'st',
+  Editor = 'nvim',
+  FileManager = 'dolphin',
+  Browser = 'firefox',
+}
 
 return M

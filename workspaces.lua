@@ -12,9 +12,9 @@ local function workspace_number(number, options)
   hl.workspace_rule(parameters)
 end
 
-workspace_number(8, { monitor = constants.SECONDARY_MONITOR })
-workspace_number(9, { monitor = constants.SECONDARY_MONITOR })
-workspace_number(10, { monitor = constants.SECONDARY_MONITOR, default = true })
+workspace_number(8, { monitor = constants.Monitors.Secondary })
+workspace_number(9, { monitor = constants.Monitors.Secondary })
+workspace_number(10, { monitor = constants.Monitors.Secondary, default = true })
 
-workspace_number(1, { monitor = constants.PRIMARY_MONITOR, default = true })
-workspace_number(2, { monitor = constants.PRIMARY_MONITOR })
+workspace_number(1, { monitor = constants.Monitors.Primary, default = true })
+workspace_number(2, { monitor = constants.Monitors.Primary })

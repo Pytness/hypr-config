@@ -6,11 +6,6 @@ logger:set_level(4)
 SRC_PATH = os.getenv 'HOME' .. '/.local/share/bin'
 local MAIN_MOD = 'SUPER'
 
-local TERM = 'st'
-local EDITOR = 'nvim'
-local FILE_MANAGER = 'dolphin'
-local BROWSER = 'firefox'
-
 local function k(keys)
   local s = ''
   for _, v in ipairs(keys) do
@@ -130,9 +125,9 @@ bind({ MAIN_MOD, 'Backspace' }, exec 'hyprlock')
 bind({ MAIN_MOD, 'SHIFT', 'Backspace' }, exec 'wlogout -b 4 -c 0 -r 0 -m 0 --protocol layer-shell')
 
 -- Application shortcuts
-bind({ MAIN_MOD, 't' }, exec(TERM))
-bind({ MAIN_MOD, 'e' }, exec(FILE_MANAGER))
-bind({ MAIN_MOD, 'f' }, exec(BROWSER))
+bind({ MAIN_MOD, 't' }, exec(constants.Apps.Term))
+bind({ MAIN_MOD, 'e' }, exec(constants.Apps.FileManager))
+bind({ MAIN_MOD, 'f' }, exec(constants.Apps.Browser))
 bind({ 'CTRL', 'SHIFT', 'Escape' }, exec(SRC_PATH .. '/sysmonlaunch.sh'))
 
 -- Rofi
@@ -175,8 +170,8 @@ end
 bind({ MAIN_MOD, '0' }, hl.dsp.focus { workspace = '10' })
 
 -- Move workspace to monitor
-bind({ MAIN_MOD, 'CTRL', 'h' }, hl.dsp.workspace.move { monitor = constants.SECONDARY_MONITOR })
-bind({ MAIN_MOD, 'CTRL', 'l' }, hl.dsp.workspace.move { monitor = constants.PRIMARY_MONITOR })
+bind({ MAIN_MOD, 'CTRL', 'h' }, hl.dsp.workspace.move { monitor = constants.Monitors.Secondary })
+bind({ MAIN_MOD, 'CTRL', 'l' }, hl.dsp.workspace.move { monitor = constants.Monitors.Primary })
 
 -- Relative workspaces
 bind({ MAIN_MOD, 'CTRL', 'k' }, hl.dsp.focus { workspace = '-1' })

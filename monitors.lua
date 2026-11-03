@@ -1,7 +1,7 @@
 local constants = require 'constants'
 
 hl.monitor {
-  output = constants.PRIMARY_MONITOR,
+  output = constants.Monitors.Primary,
   mode = '3840x2160@143',
   position = '1600x0',
   scale = 1.5,
@@ -10,7 +10,7 @@ hl.monitor {
 }
 
 hl.monitor {
-  output = constants.SECONDARY_MONITOR,
+  output = constants.Monitors.Secondary,
   mode = '2560x1440@60',
   position = '0x0',
   scale = 1.6,
